@@ -1,4 +1,6 @@
 import path from 'node:path';
+import 'dotenv/config';
+
 
 export const SORT_ORDER = {
   ASC: 'asc',
