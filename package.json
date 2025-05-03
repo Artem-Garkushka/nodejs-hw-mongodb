@@ -9,7 +9,6 @@
     "dev": "nodemon src/index.js"
   },
   "keywords": [],
-  "author": "Valeriia Martynova <vmartynova95@gmail.com>",
   "license": "ISC",
   "description": "",
   "devDependencies": {
