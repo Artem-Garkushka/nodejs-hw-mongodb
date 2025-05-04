@@ -1,6 +1,13 @@
+/* eslint-disable no-undef */
 import Joi from 'joi';
 
 export const createContactSchema = Joi.object({
+  userId: Joi.string().custom((value, helper) => {
+    if (value && !isValidObjectId(value)) {
+      return helper.message('User id should be a valid mongo id');
+    }
+    return true;
+  }),
   name: Joi.string().min(3).max(20).required().messages({
     'string.base': 'Name should be a string',
     'string.min': 'Name should be at least 3 characters long',
@@ -35,6 +42,12 @@ export const createContactSchema = Joi.object({
 });
 
 export const updateContactSchema = Joi.object({
+  userId: Joi.string().custom((value, helper) => {
+    if (value && !isValidObjectId(value)) {
+      return helper.message('User id should be a valid mongo id');
+    }
+    return true;
+  }),
   name: Joi.string().min(3).max(20).messages({
     'string.base': 'Name should be a string',
     'string.min': 'Name should be at least 3 characters long',
