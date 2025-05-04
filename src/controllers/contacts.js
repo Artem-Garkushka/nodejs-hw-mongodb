@@ -100,19 +100,21 @@ export const patchContactController = async (req, res, next) => {
 
   let photoUrl;
 
-  if (photo) {
-    if (getEnvVar('ENABLE_CLOUDINARY') === 'true') {
-      photoUrl = await saveFileToCloudinary(photo);
-    } else {
-      photoUrl = await saveFileToUploadDir(photo);
-    }
-  }
+  const contact = await createContact({ ...req.body, userId, photo: photoUrl });
 
   const result = await updateContact(contactId, userId, {
     ...req.body,
     photo: photoUrl,
   });
 
+  const updatePayload = {
+    ...req.body,
+  };
+  if (photoUrl) {
+    updatePayload.photo = photoUrl;
+  }
+
+const contact = await createContact({ ...updatePayload, userId });
   if (!result) {
     next(createHttpError(404, `Contact not found!`));
     return;

@@ -1,5 +1,11 @@
-/* eslint-disable no-undef */
 import Joi from 'joi';
+
+const contact = await createContact({ ...req.body, userId, photo: photoUrl });
+
+export const createContact = async (payload, userId) => {
+  const contact = await ContactsCollection.create({ ...payload, userId });
+  return contact;
+};
 
 export const createContactSchema = Joi.object({
   userId: Joi.string().custom((value, helper) => {
