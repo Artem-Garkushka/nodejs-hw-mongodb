@@ -1,3 +1,4 @@
+import { createContact } from './contactsService.js';
 import {
   getAllContacts,
   getContactById,
@@ -64,7 +65,7 @@ export const createContactController = async (req, res) => {
       photoUrl = await saveFileToUploadDir(photo);
     }
   }
-  const contact = await createContact({ ...req.body, userId, photo: photoUrl }); // await createContact(req.body, userId);
+  const contact = await createContact({ ...req.body, userId, photo: photoUrl });
   res.status(201).json({
     status: 201,
     message: 'Successfully created a contact!',
