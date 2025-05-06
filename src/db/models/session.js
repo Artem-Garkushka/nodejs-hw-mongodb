@@ -1,4 +1,3 @@
-
 import { model, Schema } from 'mongoose';
 
 const sessionSchema = new Schema(
@@ -28,9 +27,5 @@ const sessionSchema = new Schema(
   },
   { versionKey: false, timestamps: true },
 );
-sessionSchema.post('save', handleSaveError);
-sessionSchema.pre('findOneAndUpdate', setUpdateSettings);
-sessionSchema.post('findOneAndUpdate', handleSaveError);
 
-const sessionCollection = model('session', sessionSchema);
 export const SessionCollection = model('session', sessionSchema);

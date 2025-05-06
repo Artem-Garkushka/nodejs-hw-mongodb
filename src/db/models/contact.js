@@ -1,3 +1,4 @@
+/* eslint-disable no-undef */
 import { model, Schema } from 'mongoose';
 
 const contactSchema = new Schema(
@@ -41,11 +42,5 @@ const contactSchema = new Schema(
   },
   { versionKey: false, timestamps: true },
 );
-contactSchema.post('save', handleSaveError);
-contactSchema.pre('findOneAndUpdate', setUpdateSettings);
-contactSchema.post('findOneAndUpdate', handleSaveError);
-export const contactSortFields = ['name', 'phoneNumber', 'email', 'isFavourite', 'contactType'];
-const ContactColection = model('seagull', contactSchema);
 
 export const ContactsCollection = model('contact', contactSchema);
-export default ContactColection;

@@ -1,32 +1,52 @@
+/* eslint-disable no-undef */
 import { model, Schema } from 'mongoose';
 
 const userSchema = new Schema(
-  {
-    name: {
-      type: String,
-      required: true,
+    {
+      name: {
+        type: String,
+        required: true,
+        minlength: 3,
+        maxlength: 20,
+      },
+      phoneNumber: {
+        type: String,
+        required: true,
+        minlength: 3,
+        maxlength: 20,
+      },
+      email: {
+        type: String,
+      },
+      isFavourite: {
+        type: Boolean,
+        default: false,
+        required: true,
+      },
+      contactType: {
+        type: String,
+        enum: typeList,
+        required: true,
+        default: typeList[0],
+      },
+      userId: {
+        type: Schema.Types.ObjectId,
+        ref: 'users',
+        required: true,
+      },
+      photo: {
+        type: String,
+        required: false,
+        default: null,
+      },
     },
-    email: {
-      type: String,
-      match: emailRedexp,
-      unique: true,
-      required: true,
-    },
-    password: {
-      type: String,
-      required: true,
-    },
-    verify: {
-      type: Boolean,
-      default: false,
-      required: true,
-    },
-  },
-  { versionKey: false, timestamps: true },
-);
+    { versionKey: false, timestamps: true },
+  );
 
-userSchema.post('save', handleSaveError);
-userSchema.pre('findOneAndUpdate', setUpdateSettings);
-userSchema.post('findOneAndUpdate', handleSaveError);
+userSchema.methods.toJSON = function () {
+  const obj = this.toObject();
+  delete obj.password;
+  return obj;
+};
 
 export const UserCollection = model('user', userSchema);
