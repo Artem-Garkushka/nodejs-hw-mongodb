@@ -8,30 +8,25 @@ const userSchema = new Schema(
     },
     email: {
       type: String,
-      email: true,
-      required: true,
+      match: emailRedexp,
       unique: true,
+      required: true,
     },
     password: {
       type: String,
       required: true,
     },
-    createAt: {
-      type: Date,
-      default: Date.now,
-    },
-    updateAt: {
-      type: Date,
-      default: Date.now,
+    verify: {
+      type: Boolean,
+      default: false,
+      required: true,
     },
   },
-  { timestamps: true, versionKey: false },
+  { versionKey: false, timestamps: true },
 );
 
-userSchema.methods.toJSON = function () {
-  const obj = this.toObject();
-  delete obj.password;
-  return obj;
-};
+userSchema.post('save', handleSaveError);
+userSchema.pre('findOneAndUpdate', setUpdateSettings);
+userSchema.post('findOneAndUpdate', handleSaveError);
 
 export const UserCollection = model('user', userSchema);

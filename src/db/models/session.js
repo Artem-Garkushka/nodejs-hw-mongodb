@@ -5,7 +5,8 @@ const sessionSchema = new Schema(
   {
     userId: {
       type: Schema.Types.ObjectId,
-      ref: 'user',
+      ref: 'users',
+      required: true,
     },
     accessToken: {
       type: String,
@@ -19,12 +20,17 @@ const sessionSchema = new Schema(
       type: Date,
       required: true,
     },
-    refreshTokenValidUntil: {
+
+    refreshTokeValidUntil: {
       type: Date,
       required: true,
     },
   },
-  { timestamps: true, versionKey: false },
+  { versionKey: false, timestamps: true },
 );
+sessionSchema.post('save', handleSaveError);
+sessionSchema.pre('findOneAndUpdate', setUpdateSettings);
+sessionSchema.post('findOneAndUpdate', handleSaveError);
 
+const sessionCollection = model('session', sessionSchema);
 export const SessionCollection = model('session', sessionSchema);
