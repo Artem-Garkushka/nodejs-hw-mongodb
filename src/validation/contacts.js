@@ -1,18 +1,7 @@
+
 import Joi from 'joi';
 
-
-export const createContact = async (payload, userId) => {
-  const contact = await ContactsCollection.create({ ...payload, userId });
-  return contact;
-};
-
 export const createContactSchema = Joi.object({
-  userId: Joi.string().custom((value, helper) => {
-    if (!isValidObjectId(value)) {
-      return helper.message('User ID should be a valid MongoDB ObjectId');
-    }
-    return value;
-  }),
   name: Joi.string().min(3).max(20).required().messages({
     'string.base': 'Name should be a string',
     'string.min': 'Name should be at least 3 characters long',
@@ -47,13 +36,6 @@ export const createContactSchema = Joi.object({
 });
 
 export const updateContactSchema = Joi.object({
-  userId: Joi.string().custom((value, helper) => {
-    if (!isValidObjectId(value)) {
-      return helper.message('User ID should be a valid MongoDB ObjectId');
-    }
-    return value;
-  }),
-
   name: Joi.string().min(3).max(20).messages({
     'string.base': 'Name should be a string',
     'string.min': 'Name should be at least 3 characters long',
